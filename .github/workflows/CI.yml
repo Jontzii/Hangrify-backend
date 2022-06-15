@@ -39,7 +39,7 @@ jobs:
 
     backend-auth-test:
         name: Test authentication backend
-        needs: backend-build
+        needs: backend-auth-build
         runs-on: ubuntu-latest
 
         defaults:
@@ -80,7 +80,7 @@ jobs:
 
     backend-food-test:
         name: Test food backend
-        needs: backend-build
+        needs: backend-food-build
         runs-on: ubuntu-latest
 
         defaults:
@@ -121,7 +121,7 @@ jobs:
 
     backend-stats-test:
         name: Test statistics backend
-        needs: backend-build
+        needs: backend-stats-build
         runs-on: ubuntu-latest
 
         defaults:
