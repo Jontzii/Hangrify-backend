@@ -4,5 +4,5 @@
 
 This backend has the following responsibilities:
 
-- Authenticate users
-- Provide permissions
+-   Authenticate users
+-   Provide permissions

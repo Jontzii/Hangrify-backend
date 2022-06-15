@@ -4,4 +4,4 @@
 
 This backend has the following responsibilities:
 
-- Return statistics for the user
+-   Return statistics for the user
