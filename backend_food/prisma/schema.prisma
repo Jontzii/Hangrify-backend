@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model meals {
+  mealguid        String  @id(map: "meals_pk") @db.Uuid
+  ownerguid       String  @db.Uuid
+  creatorguid     String? @db.Uuid
+  mealname        String  @db.VarChar
+  mealdescription String? @db.VarChar
+}
+
+model recipes {
+  recipeguid        String  @id(map: "recipes_pk") @unique(map: "recipes_recipeguid_idx") @db.Uuid
+  ownerguid         String  @db.Uuid
+  creatorguid       String? @db.Uuid
+  recipename        String  @db.VarChar
+  recipedescription String? @db.VarChar
+  recipematerial    Json
+  recipeguide       String? @db.VarChar
+}
