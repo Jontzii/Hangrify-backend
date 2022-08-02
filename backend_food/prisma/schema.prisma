@@ -14,7 +14,7 @@ model Meal {
   userId      String      @db.Uuid
   user        User        @relation(name: "UserMeals", fields: [userId], references: [id])
   title       String      @db.VarChar(255)
-  content     String?     @db.VarChar
+  content     String?
   day         DateTime
   recipeId    String      @db.Uuid
   recipe      Recipe      @relation(name: "RecipeMeals", fields: [recipeId], references: [id])
@@ -27,30 +27,17 @@ model Recipe {
   userId          String      @db.Uuid
   user            User        @relation(name: "UserRecipes", fields: [userId], references: [id])
   title           String      @db.VarChar(255)
-  content         String?     @db.VarChar
+  content         String?
   recipematerial  Json
-  guide           String?     @db.VarChar
+  guide           String?
   meals           Meal[]      @relation(name: "RecipeMeals")
   favorite        Boolean     @default(false)
   timesEaten      Int         @default(0)
-}
-
-model Statistics {
-  id              String      @id @default(uuid()) @db.Uuid
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-  userId          String      @unique @db.Uuid
-  user            User        @relation(name: "UserStatistics", fields: [userId], references: [id])
-  lastLogin       DateTime
-  recipesCreated  Int
+  imageUrl        String?
 }
 
 model User {
   id              String        @id @db.Uuid
-  name            String
-  email           String        @unique
-  emailVerified   Boolean       @default(false)
   meals           Meal[]        @relation(name: "UserMeals")
   recipes         Recipe[]      @relation(name: "UserRecipes")
-  statistics      Statistics?   @relation(name: "UserStatistics")
 }
