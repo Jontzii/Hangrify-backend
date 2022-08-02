@@ -50,9 +50,6 @@ model User {
   name            String
   email           String        @unique
   emailVerified   Boolean       @default(false)
-  password        String?
-  googleId        String?
-  appleId         String?
   meals           Meal[]        @relation(name: "UserMeals")
   recipes         Recipe[]      @relation(name: "UserRecipes")
   statistics      Statistics?   @relation(name: "UserStatistics")
