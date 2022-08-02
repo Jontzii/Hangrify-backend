@@ -7,20 +7,53 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model meals {
-  mealguid        String  @id(map: "meals_pk") @db.Uuid
-  ownerguid       String  @db.Uuid
-  creatorguid     String? @db.Uuid
-  mealname        String  @db.VarChar
-  mealdescription String? @db.VarChar
+model Meal {
+  id          String      @id @default(uuid()) @db.Uuid
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  userId      String      @db.Uuid
+  user        User        @relation(name: "UserMeals", fields: [userId], references: [id])
+  title       String      @db.VarChar(255)
+  content     String?     @db.VarChar
+  day         DateTime
+  recipeId    String      @db.Uuid
+  recipe      Recipe      @relation(name: "RecipeMeals", fields: [recipeId], references: [id])
 }
 
-model recipes {
-  recipeguid        String  @id(map: "recipes_pk") @unique(map: "recipes_recipeguid_idx") @db.Uuid
-  ownerguid         String  @db.Uuid
-  creatorguid       String? @db.Uuid
-  recipename        String  @db.VarChar
-  recipedescription String? @db.VarChar
-  recipematerial    Json
-  recipeguide       String? @db.VarChar
+model Recipe {
+  id              String      @id @default(uuid()) @db.Uuid
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  userId          String      @db.Uuid
+  user            User        @relation(name: "UserRecipes", fields: [userId], references: [id])
+  title           String      @db.VarChar(255)
+  content         String?     @db.VarChar
+  recipematerial  Json
+  guide           String?     @db.VarChar
+  meals           Meal[]      @relation(name: "RecipeMeals")
+  favorite        Boolean     @default(false)
+  timesEaten      Int         @default(0)
+}
+
+model Statistics {
+  id              String      @id @default(uuid()) @db.Uuid
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  userId          String      @unique @db.Uuid
+  user            User        @relation(name: "UserStatistics", fields: [userId], references: [id])
+  lastLogin       DateTime
+  recipesCreated  Int
+}
+
+model User {
+  id              String        @id @db.Uuid
+  name            String
+  email           String        @unique
+  emailVerified   Boolean       @default(false)
+  password        String?
+  googleId        String?
+  appleId         String?
+  meals           Meal[]        @relation(name: "UserMeals")
+  recipes         Recipe[]      @relation(name: "UserRecipes")
+  statistics      Statistics?   @relation(name: "UserStatistics")
 }
